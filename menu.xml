@@ -121,6 +121,7 @@
     </menu>
   </menuitem>
   <menuitem label="Livraria">
+    <icon>fas:book fa-fw</icon>
     <menu>
       <menuitem label="Autores">
         <action>AuthorList</action>

@@ -1,16 +1,9 @@
 <?php
-/**
- * CidadeForm Form
- * @author  <your name here>
- */
+
 class AuthorForm extends TStandardForm
 {
-    protected $form; // form
+    protected $form; 
     
-    /**
-     * Form constructor
-     * @param $param Request
-     */
     public function __construct( $param )
     {
         parent::__construct();
@@ -26,19 +19,22 @@ class AuthorForm extends TStandardForm
         $gender = new TRadioGroup('gender');
         $name->addValidation('Nome', new TRequiredValidator()); 
 
-        $gender->addItems( [ 'M' => 'Male', 'F' => 'Female' ] );
+        $gender->addItems( [ 'M' => 'Masculino', 'F' => 'Feminino',  'O' => 'Outro' ] );
+        $gender->setUseButton();
+        $gender->setLayout('horizontal');
         
-        $id->setEditable(false);
+        $this->form->addFields([new TLabel('Id:')],[$id]);
+        $this->form->addFields([new TLabel('Nome:')],[$name]);
+        $this->form->addFields([new TLabel('Idade:')],[$age]);
+        $this->form->addFields([new TLabel('Gênero:')],[$gender]);
+        
+        // $id->setEditable(false);
         $id->setSize(100);
         $name->setSize('70%');
         $age->setSize('70%');
         $gender->setSize('70%');
         $id->setEditable(FALSE);
-        
-        $this->form->addFields([new TLabel('Id:')],[$id]);
-        $this->form->addFields([new TLabel('Nome:', '#ff0000')],[$nome]);
-        $this->form->addFields([new TLabel('Idade:')],[$uf]);
-        $this->form->addFields([new TLabel('Gênero:')],[$uf]);
+
         // create the form actions
         $this->form->addAction('Salvar', new TAction([$this, 'onSave']), 'fa:floppy-o')->addStyleClass('btn-primary');
         $this->form->addAction('Limpar formulário', new TAction([$this, 'onClear']), 'fa:eraser #dd5a43');
