@@ -128,7 +128,8 @@
         <icon>fas:address-card fa-fw</icon>
       </menuitem>
       <menuitem label="Editoras">
-        <action>CommonPage</action>
+        <action>PublisherList</action>
+        <icon>fas:file-signature fa-fw</icon>
       </menuitem>
       <menuitem label="Livros">
         <action>CommonPage</action>

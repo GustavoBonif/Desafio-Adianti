@@ -3,12 +3,8 @@ class Publisher extends TRecord
 {
     const TABLENAME = 'publisher';
     const PRIMARYKEY= 'id';
-    const IDPOLICY =  'max'; // {max, serial} 
-    
-    /**
-     * Constructor method
-     * @param $id Primary key to be loaded (optional)
-     */
+    const IDPOLICY =  'max';
+
     public function __construct($id = NULL, $callObjectLoad = TRUE)
     {
         parent::__construct($id, $callObjectLoad);
