@@ -9,7 +9,7 @@ class Author extends TRecord
     {
         parent::__construct($id, $callObjectLoad);
         parent::addAttribute('name');
-        parent::addAttribute('age');
+        parent::addAttribute('birthday');
         parent::addAttribute('gender');
     }
 }

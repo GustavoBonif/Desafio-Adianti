@@ -1,56 +1,45 @@
 <?php
-/**
- * SystemUnitList
- *
- * @version    1.0
- * @package    control
- * @subpackage admin
- * @author     Pablo Dall'Oglio
- * @copyright  Copyright (c) 2006 Adianti Solutions Ltd. (http://www.adianti.com.br)
- * @license    http://www.adianti.com.br/framework-license
- */
+
 class AuthorList extends TStandardList
 {
-    protected $form;     // registration form
-    protected $datagrid; // listing
+    protected $form;
+    protected $datagrid;
     protected $pageNavigation;
     protected $formgrid;
     protected $loaded;
     protected $deleteButton;
     protected $transformCallback;
-    
-    /**
-     * Page constructor
-     */
+
     public function __construct()
     {
         parent::__construct();
         
-        parent::setDatabase('livraria-adianti');            // defines the database
-        parent::setActiveRecord('author');   // defines the active record
-        parent::setDefaultOrder('id', 'asc');         // defines the default order
-        parent::addFilterField('id', '=', 'id'); // filterField, operator, formField
-        parent::addFilterField('name', 'like', 'name'); // filterField, operator, formField
+        parent::setDatabase('livraria-adianti');
+        parent::setActiveRecord('author'); 
+        parent::setDefaultOrder('id', 'asc'); 
+        parent::addFilterField('id', '=', 'id'); 
+        parent::addFilterField('name', 'like', 'name'); 
         
-        // creates the form
         $this->form = new BootstrapFormBuilder('form_Author');
         $this->form->setFormTitle('Autores');
         
         // create the form fields
         $id = new TEntry('id');
         $name = new TEntry('name');
-        $age = new TEntry('age');
+        $birthday = new TEntry('birthday');
         $gender = new TEntry('gender');
+
+        $birthday->setMask('99/99/9999');
         
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel('Nome')], [$name] );
-        $this->form->addFields( [new TLabel('Idade')], [$age] );
+        $this->form->addFields( [new TLabel('Nascido em')], [$birthday] );
         $this->form->addFields( [new TLabel('Gênero')], [$gender] );
 
         $id->setSize('20%');
         $name->setSize('70%');
-        $age->setSize('70%');
+        $birthday->setSize('70%');
         $gender->setSize('70%');
         
         // keep the form filled during navigation with session data
@@ -70,7 +59,7 @@ class AuthorList extends TStandardList
         // creates the datagrid columns
         $column_id = new TDataGridColumn('id', 'Id', 'center', 50);
         $column_name = new TDataGridColumn('name', 'Nome', 'left');
-        $column_age = new TDataGridColumn('age', 'Idade', 'left');
+        $column_birthday = new TDataGridColumn('birthday', 'Idade', 'left');
         $column_gender = new TDataGridColumn('gender', 'Gênero', 'left');
 
         $column_name->setTransformer( function($value, $object, $row) {
@@ -93,15 +82,13 @@ class AuthorList extends TStandardList
             }
 
             return $mascara;
-
         });
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_name);
-        $this->datagrid->addColumn($column_age);
+        $this->datagrid->addColumn($column_birthday);
         $this->datagrid->addColumn($column_gender);
-
 
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
@@ -112,10 +99,6 @@ class AuthorList extends TStandardList
         $order_name->setParameter('order', 'name');
         $column_name->setAction($order_name);
 
-        $order_age = new TAction(array($this, 'onReload'));
-        $order_age->setParameter('order', 'age');
-        $column_age->setAction($order_age);
-        
         // create EDIT action
         $action_edit = new TDataGridAction(array('AuthorForm', 'onEdit'));
         $action_edit->setButtonClass('btn btn-default');
@@ -155,30 +138,29 @@ class AuthorList extends TStandardList
         parent::add($container);
     }
 
-    public function onInlineEdit($param)
-    {
-        try
-        {
-            // get the parameter $key
-            $field = $param['field'];
-            $key   = $param['key'];
-            $value = $param['value'];
+    // public function onInlineEdit($param)
+    // {
+    //     try
+    //     {
+    //         $field = $param['field'];
+    //         $key   = $param['key'];
+    //         $value = $param['value'];
 
-            TTransaction::open('samples');
-            $object = new Author($key);
-            $object->{$field} = $value;
-            $object->store();
-            TTransaction::close();
+    //         TTransaction::open('samples');
+    //         $object = new Author($key);
+    //         $object->{$field} = $value;
+    //         $object->store();
+    //         TTransaction::close();
 
-            $this->onReloaded($param);
-            new TMessage('info', "Record Updated");
-        }
-        catch (Exception $e)
-        {
-            new TMessage('error', $e->getMessage());
-            TTransaction::rollback();
-        }
-    }
+    //         $this->onReloaded($param);
+    //         new TMessage('info', "Record Updated");
+    //     }
+    //     catch (Exception $e)
+    //     {
+    //         new TMessage('error', $e->getMessage());
+    //         TTransaction::rollback();
+    //     }
+    // }
 
     public function onSearch($param = NULL)
     {
@@ -186,7 +168,7 @@ class AuthorList extends TStandardList
 
         TSession::setValue('AuthorList_filter_id', NULL);
         TSession::setValue('AuthorList_filter_name', NULL);
-        TSession::setValue('AuthorList_filter_age', NULL);
+        TSession::setValue('AuthorList_filter_birthday', NULL);
         TSession::setValue('AuthorList_filter_gender', NULL);
 
         if (isset($data->id) AND ($data->id)) {
@@ -199,9 +181,9 @@ class AuthorList extends TStandardList
             TSession::setValue('AuthorList_filter_name', $filter);
         }
 
-        if (isset($data->age) AND ($data->age)) {
-            $filter = new TFilter('age', '=', "$data->age");
-            TSession::setValue('AuthorList_filter_age', $filter);
+        if (isset($data->birthday) AND ($data->birthday)) {
+            $filter = new TFilter('birthday', '=', "$data->birthday");
+            TSession::setValue('AuthorList_filter_birthday', $filter);
         }
 
         if (isset($data->gender) AND ($data->gender)) {
@@ -245,8 +227,8 @@ class AuthorList extends TStandardList
                 $criteria->add(TSession::getValue('AuthorList_filter_name'));
             }
 
-            if (TSession::getValue('AuthorList_filter_age')) {
-                $criteria->add(TSession::getValue('AuthorList_filter_age'));
+            if (TSession::getValue('AuthorList_filter_birthday')) {
+                $criteria->add(TSession::getValue('AuthorList_filter_birthday'));
             }
 
             if (TSession::getValue('AuthorList_filter_gender')) {
