@@ -268,6 +268,7 @@ class PublisherList extends TStandardList
             $object = new Publisher($key, FALSE);
             $object->delete();
             TTransaction::close();
+            $this->onReload( $param );
         }
         catch (Exception $e)
         {

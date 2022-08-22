@@ -261,6 +261,7 @@ class AuthorList extends TStandardList
             $object = new Author($key, FALSE);
             $object->delete();
             TTransaction::close();
+            $this->onReload( $param );
         }
         catch (Exception $e)
         {
