@@ -132,7 +132,8 @@
         <icon>fas:file-signature fa-fw</icon>
       </menuitem>
       <menuitem label="Livros">
-        <action>CommonPage</action>
+        <action>BookList</action>
+        <icon>fas:book-open fa-fw</icon>
       </menuitem>
     </menu>
   </menuitem>
