@@ -84,7 +84,6 @@ class BookList extends TStandardList
         $this->datagrid->addColumn($column_author_id);
         $this->datagrid->addColumn($column_publisher_id);
 
-
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
         $order_id->setParameter('order', 'id');

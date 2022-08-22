@@ -171,6 +171,6 @@ class SystemProgramList extends TStandardList
      */
     public function displayBuilderActions($object)
     {
-        return ( (strpos($object->controller, 'System') === false) and !in_array($object->controller, ['CommonPage', 'WelcomeView']));
+        return ( (strpos($object->controller, 'System') === false) and !in_array($object->controller, ['WelcomeView']));
     }
 }

@@ -62,36 +62,12 @@ class LoginForm extends TPage
 
         $user   = '<span class="login-avatar"><span class="fa fa-user"></span></span>';
         $locker = '<span class="login-avatar"><span class="fa fa-lock"></span></span>';
-        $unit   = '<span class="login-avatar"><span class="fa fa-university"></span></span>';
-        $lang   = '<span class="login-avatar"><span class="fa fa-globe"></span></span>';
-        
+
         $row = $this->form->addFields( [$user, $login] );
         $row->layout = ['col-sm-12 display-flex'];
         $row = $this->form->addFields( [$locker, $password] );
         $row->layout = ['col-sm-12 display-flex'];
         $this->form->addFields( [$previous_class, $previous_method, $previous_parameters] );
-        
-        if (!empty($ini['general']['multiunit']) and $ini['general']['multiunit'] == '1')
-        {
-            $unit_id = new TCombo('unit_id');
-            $unit_id->setSize('70%');
-            $unit_id->style = 'height:35px;font-size:14px;float:left;border-bottom-left-radius: 0;border-top-left-radius: 0;';
-            $row = $this->form->addFields( [$unit, $unit_id] );
-            $row->layout = ['col-sm-12 display-flex'];
-            $login->setExitAction(new TAction( [$this, 'onExitUser'] ) );
-        }
-        
-        if (!empty($ini['general']['multi_lang']) and $ini['general']['multi_lang'] == '1')
-        {
-            $lang_id = new TCombo('lang_id');
-            $lang_id->setSize('70%');
-            $lang_id->style = 'height:35px;font-size:14px;float:left;border-bottom-left-radius: 0;border-top-left-radius: 0;';
-            $lang_id->addItems( $ini['general']['lang_options'] );
-            $lang_id->setValue( $ini['general']['language'] );
-            $lang_id->setDefaultOption(FALSE);
-            $row = $this->form->addFields( [$lang, $lang_id] );
-            $row->layout = ['col-sm-12 display-flex'];
-        }
         
         $btn = $this->form->addAction(_t('Log in'), new TAction(array($this, 'onLogin')), '');
         $btn->class = 'btn btn-primary';
@@ -154,12 +130,7 @@ class LoginForm extends TPage
             
             (new TRequiredValidator)->validate( _t('Login'),    $data->login);
             (new TRequiredValidator)->validate( _t('Password'), $data->password);
-            
-            if (!empty($ini['general']['multiunit']) and $ini['general']['multiunit'] == '1')
-            {
-                (new TRequiredValidator)->validate( _t('Unit'), $data->unit_id);
-            }
-            
+
             if (!empty($ini['general']['require_terms']) && $ini['general']['require_terms'] == '1' && !empty($param['usage_term_policy']) AND empty($data->accept))
             {
                 throw new Exception(_t('You need read and agree to the terms of use and privacy policy'));

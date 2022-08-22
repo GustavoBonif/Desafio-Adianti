@@ -121,30 +121,6 @@ class PublisherList extends TStandardList
         parent::add($container);
     }
 
-    public function onInlineEdit($param)
-    {
-        try
-        {
-            $field = $param['field'];
-            $key   = $param['key'];
-            $value = $param['value'];
-
-            TTransaction::open('samples');
-            $object = new Publisher($key);
-            $object->{$field} = $value;
-            $object->store();
-            TTransaction::close();
-
-            $this->onReloaded($param);
-            new TMessage('info', "Record Updated");
-        }
-        catch (Exception $e)
-        {
-            new TMessage('error', $e->getMessage());
-            TTransaction::rollback();
-        }
-    }
-
     public function onSearch($param = NULL)
     {
         $data = $this->form->getData();
