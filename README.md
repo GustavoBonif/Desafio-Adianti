@@ -25,4 +25,4 @@ Projeto de uma livraria para aprender a trabalhar com o framework PHP Adianti
 * O usuário user tem acesso às listagens de registros gerados.
 
 ## Impedimentos
-* Algumas questões quanto às permissões de interações de diferentes usuários na mesma tela ainda não estão claras. Por esse motivo o usuário comum não consegue criar ou editar um registro, pois essa alteração é feita na tela de formulário, mas consegue excluir, já que a exclusão ocorre na própria tela de listagem de registros. Com mais alguns dias me dedicando à aprender a trabalhar com as permissões esses problemas serão resolvidos.
+* Algumas questões quanto às permissões de interações de diferentes usuários na mesma tela ainda não estão claras. Por esse motivo o usuário comum não consegue criar ou editar um registro, pois essa alteração é feita na tela de formulário, mas consegue excluir, já que a exclusão ocorre na própria tela de listagem de registros.
